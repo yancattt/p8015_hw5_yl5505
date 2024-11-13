@@ -7,6 +7,9 @@ output: github_document
 
 ```{r, include = FALSE, message = FALSE, warning = FALSE}
 library(tidyverse)
+library(ggplot2)
+library(readxl)
+library(rvest)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -27,10 +30,41 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
 
-Load key packages.
 
+# Problem 1
+## Birthday Function
 ```{r}
-library(tidyverse)
-library(readxl)
-library(rvest)
+bday_dupes = function(n) {
+
+  bdays = sample(1:365, size = n, replace = TRUE)
+  
+  has_dupe = any(duplicated(bdays))
+  
+  return(has_dupe)
+}
+
 ```
+## Run function for different group size
+```{r}
+set.seed(123)
+results = map_df(2:50, function(n) {
+  dupes = map_lgl(1:10000, ~ bday_dupes(n))
+  prob = mean(dupes)
+  tibble(group_size = n, prob = prob)
+})
+```
+## Plot
+```{r}
+ggplot(results, aes(x = group_size, y = prob)) +
+  geom_line() +
+  labs(
+    title = "Probability of Shared Birthday",
+    x = "Group Size",
+    y = "Probability of Shared Birthday"
+  )
+```
+
+
+
+
+
