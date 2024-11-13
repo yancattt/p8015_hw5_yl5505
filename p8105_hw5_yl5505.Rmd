@@ -58,12 +58,12 @@ results = map_df(2:50, function(n) {
 ggplot(results, aes(x = group_size, y = prob)) +
   geom_line() +
   labs(
-    title = "Probability of Shared Birthday",
+    title = "Problem 1:Birthday Function",
     x = "Group Size",
     y = "Probability of Shared Birthday"
   )
 ```
-
+- The probability of shared birthday increases as the group size increases, and the growth in probability is nonlinear.
 
 
 
