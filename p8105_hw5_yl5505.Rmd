@@ -152,5 +152,19 @@ total_homi = homicide_new |>
 total_homi
 ```
 
+## Proportion of Homicides in Baltimore
+```{r}
+baltimore = total_homi |>
+  filter(city_state == "Baltimore, MD") |>
+  summarise(
+    prop_test = prop.test(unsolved_homicides, total_homicides) |> broom::tidy()
+  ) |>
+  unnest(prop_test) |>
+  select(estimate, conf.low, conf.high) 
+
+baltimore
+
+```
+- In Baltimore, MD, an estimated 64.6% of homicides remain unsolved, with a 95% confidence interval ranging from 62.8% to 66.3%. 
 
 
