@@ -140,7 +140,7 @@ homicide_new = homicide |>
   mutate(city_state = paste(city, state, sep = ", "))
 
 ```
-##  total homicides and unsolved homicides
+##  Total homicides and unsolved homicides
 ```{r}
 total_homi = homicide_new |>
   group_by(city_state) |>
@@ -167,4 +167,18 @@ baltimore
 ```
 - In Baltimore, MD, an estimated 64.6% of homicides remain unsolved, with a 95% confidence interval ranging from 62.8% to 66.3%. 
 
+## Proportion for Each City
+```{r}
+city_porp = total_homi |>
+  mutate(
+    prop_result = purrr::map2(unsolved_homicides, total_homicides, ~ prop.test(x = .x, n = .y))
+  ) |>
+  mutate(
+    prop_result = purrr::map(prop_result, broom::tidy)
+  ) |>
+  unnest(prop_result) |>
+  select(city_state, estimate, conf.low, conf.high)
+  
+city_porp
+```
 
