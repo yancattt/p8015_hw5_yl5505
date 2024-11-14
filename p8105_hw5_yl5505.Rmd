@@ -35,11 +35,8 @@ scale_fill_discrete = scale_fill_viridis_d
 ## Birthday Function
 ```{r}
 bday_dupes = function(n) {
-
   bdays = sample(1:365, size = n, replace = TRUE)
-  
   has_dupe = any(duplicated(bdays))
-  
   return(has_dupe)
 }
 
@@ -129,3 +126,31 @@ results_df |>
 
 ```
 - No, the sample average of estimate mu across tests for which the null is rejected is not approximately equal to the true value of mu.The average estimate mu is consistently higher than the true value of mu for the cases where the null hypothesis was rejected.Because more samples reject the null, including those closer to the true value, will lead to a reduction in bias.So the red line becomes closer to the blue line as mu increases. 
+
+# Problem 3
+## Import Data
+```{r}
+homicide = read_csv("./homicide-data.csv")
+```
+- This dataset has 52179 observations and 12 variables, it provides a detailed look at homicide incidents across various U.S. cities, including victim information (name, race, age, sex), location data (latitude, longitude, city, state), and the current status of the case.
+
+## Create new variable
+```{r}
+homicide_new = homicide |>
+  mutate(city_state = paste(city, state, sep = ", "))
+
+```
+##  total homicides and unsolved homicides
+```{r}
+total_homi = homicide_new |>
+  group_by(city_state) |>
+  summarize(
+    total_homicides = n(),
+    unsolved_homicides = sum(disposition %in% c("Closed without arrest", "Open/No arrest"))
+  )
+
+total_homi
+```
+
+
+
