@@ -65,6 +65,26 @@ ggplot(results, aes(x = group_size, y = prob)) +
 ```
 - The probability of shared birthday increases as the group size increases, and the growth in probability is nonlinear.
 
+# Problem 2
+## t-test
+```{r}
+set.seed(123)
+n = 30
+sigma = 5
+mu_vals = 0:6
+
+power_results = map_df(mu_vals, function(mu) {
+  p_vals = map_dbl(1:5000, ~ {
+    x = rnorm(n, mean = mu, sd = sigma)
+    t_test = t.test(x, mu = 0)
+    broom::tidy(t_test)$p.value
+  })
+  power = mean(p_vals < 0.05)
+  tibble(mu = mu, power = power)
+})
+
+power_results
+```
 
 
 
