@@ -182,3 +182,21 @@ city_porp = total_homi |>
 city_porp
 ```
 
+## PLOT
+```{r}
+ggplot(city_porp, aes(x = reorder(city_state, estimate), y = estimate, color = city_state)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.3) +
+  coord_flip() +
+  labs(
+    title = "Proportion of Unsolved Homicides by City",
+    x = "City",
+    y = "Proportion of Unsolved Homicides"
+  ) +
+  theme(legend.position = "none")
+```
+
+
+
+
+
